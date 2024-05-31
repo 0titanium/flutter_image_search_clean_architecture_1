@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_image_search_clean_architecture_1/presentation/photo_detail/photo_detail_screen.dart';
+import 'package:flutter_image_search_clean_architecture_1/presentation/search_list/components/image_card_widget.dart';
 import 'package:flutter_image_search_clean_architecture_1/presentation/search_list/search_list_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -46,6 +48,8 @@ class _SearchListScreenState extends State<SearchListScreen> {
             ),
           ),
           Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
               child: state.isLoading
                   ? const Center(
                       child: CircularProgressIndicator(),
@@ -53,8 +57,29 @@ class _SearchListScreenState extends State<SearchListScreen> {
                   : GridView.count(
                       crossAxisCount: 2,
                       children: state.photos
-                          .map((photo) => Image.network(photo.largeImageURL))
-                          .toList())),
+                          .map(
+                            (photo) => GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PhotoDetailScreen(photo: photo),
+                                  ),
+                                );
+                              },
+                              child: Hero(
+                                tag: photo.id,
+                                child: ImageCardWidget(
+                                  photo: photo,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+            ),
+          ),
         ],
       ),
     );
