@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             photoApi: PhotoApi(),
           ),
         ),
-        child: SearchListScreen(),
+        child: const SearchListScreen(),
       ),
     );
   }
