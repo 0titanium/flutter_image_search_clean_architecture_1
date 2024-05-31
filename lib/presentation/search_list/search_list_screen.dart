@@ -29,7 +29,32 @@ class _SearchListScreenState extends State<SearchListScreen> {
       ),
       body: Column(
         children: [
-          TextField(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _queryTextEditingController,
+              decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: '검색어를 입력하세요.',
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {
+                      final query = _queryTextEditingController.text;
+                      viewModel.onSearch(query);
+                    },
+                  )),
+            ),
+          ),
+          Expanded(
+              child: state.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : GridView.count(
+                      crossAxisCount: 2,
+                      children: state.photos
+                          .map((photo) => Image.network(photo.largeImageURL))
+                          .toList())),
         ],
       ),
     );
